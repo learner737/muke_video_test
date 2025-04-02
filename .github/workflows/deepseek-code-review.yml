@@ -1,0 +1,32 @@
+name: DeepSeek Code Review
+
+on:
+  pull_request_target:
+    types:
+      - opened      # 当 PR 被创建时触发
+      - reopened    # 当 PR 被重新打开时触发
+      - synchronize # 当有新的提交推送到 PR 时触发
+
+# 修复 GraphQL: Resource not accessible by integration (addComment) 错误
+permissions:
+  pull-requests: write
+
+jobs:
+  setup-deepseek-review:
+    runs-on: ubuntu-latest
+    name: Code Review
+    steps:
+      - name: DeepSeek Code Review
+        uses: hustcer/deepseek-review@v1
+        with:
+          chat-token: ${{ secrets.CHAT_TOKEN }}
+          # 以下是可选参数，可根据需要取消注释并配置
+          # model: deepseek-chat
+          # base-url: https://api.deepseek.com
+          # max-length: 0
+          # temperature: 1.0
+          # include-patterns: "*.js,*.ts,*.py"
+          # exclude-patterns: "pnpm-lock.yaml,package-lock.json,*.lock"
+          # sys-prompt: "您是一位专业的代码审查助手， 负责分析 GitHub Pull Requests 中的代码变更。识别潜在问题，如代码风格违规、逻辑错误、安全漏洞，并提供改进建议。请清晰地列出问题和建议。"
+          # user-prompt: "请审查以下代码变更"
+
